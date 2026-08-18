@@ -1,0 +1,6 @@
+@PayTerminal.Api_HostAddress = http://localhost:5058
+
+GET {{PayTerminal.Api_HostAddress}}/api/v1/health
+Accept: application/json
+
+###

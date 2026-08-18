@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# .NET / backend
+backend/**/bin/
+backend/**/obj/
+*.user
+.env
+backend/**/appsettings.*.local.json
