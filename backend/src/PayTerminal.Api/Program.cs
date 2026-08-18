@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using PayTerminal.Application;
+using PayTerminal.Application.Options;
 using PayTerminal.Infrastructure;
 using PayTerminal.Infrastructure.Persistence;
 
@@ -10,7 +12,9 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? string.Empty;
 
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(connectionString);
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 
 var app = builder.Build();
 
