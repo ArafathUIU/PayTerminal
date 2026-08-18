@@ -149,7 +149,7 @@ public class AuthService
 
     private static string GenerateRefreshTokenValue()
     {
-        var bytes = new byte[48];
+        var bytes = new byte[64];
         RandomNumberGenerator.Fill(bytes);
         return Convert.ToHexString(bytes);
     }
