@@ -8,6 +8,7 @@ import com.arafath.payterminalversion2.data.session.TokenStore;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import okhttp3.Authenticator;
@@ -21,17 +22,20 @@ import okhttp3.Route;
  * pair (single-flight under a lock so parallel 401s cause one refresh), the
  * original request is retried with the new bearer token, and the session is
  * cleared if the refresh itself fails.
+ *
+ * AuthApi is injected lazily (Provider) to break the Dagger cycle
+ * OkHttpClient -> Authenticator -> AuthApi -> Retrofit -> OkHttpClient.
  */
 @Singleton
 public class AuthAuthenticator implements Authenticator {
     private final TokenStore tokenStore;
-    private final AuthApi authApi;
+    private final Provider<AuthApi> authApiProvider;
     private final Object refreshLock = new Object();
 
     @Inject
-    public AuthAuthenticator(TokenStore tokenStore, AuthApi authApi) {
+    public AuthAuthenticator(TokenStore tokenStore, Provider<AuthApi> authApiProvider) {
         this.tokenStore = tokenStore;
-        this.authApi = authApi;
+        this.authApiProvider = authApiProvider;
     }
 
     @Override
@@ -64,7 +68,7 @@ public class AuthAuthenticator implements Authenticator {
         }
 
         retrofit2.Response<AuthResponse> response =
-                authApi.refresh(new RefreshRequest(refreshToken)).execute();
+                authApiProvider.get().refresh(new RefreshRequest(refreshToken)).execute();
         if (!response.isSuccessful() || response.body() == null) {
             return null;
         }

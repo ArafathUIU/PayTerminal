@@ -54,6 +54,10 @@ public class AuthRepository {
         return userDao.observeFirst();
     }
 
+    public UserEntity getUser() {
+        return userDao.getFirst();
+    }
+
     public boolean hasSession() {
         return tokenStore.hasSession();
     }

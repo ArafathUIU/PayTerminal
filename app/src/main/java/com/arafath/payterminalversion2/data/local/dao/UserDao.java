@@ -17,6 +17,9 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     UserEntity getById(String id);
 
+    @Query("SELECT * FROM users LIMIT 1")
+    UserEntity getFirst();
+
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     LiveData<UserEntity> observeById(String id);
 

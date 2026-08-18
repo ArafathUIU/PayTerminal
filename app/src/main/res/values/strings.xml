@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">PayTerminalVersion2</string>
+    <string name="app_name">PayTerminal</string>
+
+    <string name="login_subtitle">Sign in to your merchant account</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="phone_hint">Phone (optional)</string>
+    <string name="login_button">Sign in</string>
+    <string name="no_account_link">No account? Register your business</string>
+    <string name="have_account_link">Already have an account? Sign in</string>
+
+    <string name="register_title">Register your business</string>
+    <string name="register_subtitle">Creates an owner account and merchant</string>
+    <string name="name_hint">Your name</string>
+    <string name="business_hint">Business name</string>
+    <string name="register_button">Create account</string>
+
+    <string name="pair_title">Pair your terminal</string>
+    <string name="pair_subtitle">Enter the pairing code shown on your terminal</string>
+    <string name="pairing_code_hint">Pairing code</string>
+    <string name="terminal_name_hint">Terminal name</string>
+    <string name="pair_button">Pair terminal</string>
+
+    <string name="terminal_card_title">Paired terminal</string>
+    <string name="logout_button">Log out</string>
+    <string name="home_greeting">Welcome, %1$s</string>
+    <string name="home_terminal_status">Status: %1$s</string>
+    <string name="home_merchant_id">Merchant: %1$s</string>
 </resources>
