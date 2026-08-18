@@ -101,6 +101,20 @@ allowed up to the paid amount.
 | created_at     | timestamptz   | default now()                      |
 | processed_at   | timestamptz   | nullable                           |
 
+### RefreshTokens
+Issued on login, rotated on refresh, revoked when a new token supersedes them
+(one active token per user).
+
+| Column         | Type         | Notes                        |
+| -------------- | ------------ | ---------------------------- |
+| id             | uuid         | PK                           |
+| user_id        | uuid         | FK → users.id                |
+| token          | varchar(64)  | unique, random value         |
+| expires_at     | timestamptz  |                              |
+| revoked        | boolean      | default false                |
+| created_at     | timestamptz  | default now()                |
+| revoked_at     | timestamptz  | nullable                     |
+
 ### TransactionEvents
 Immutable audit log of every state transition (and other notable events).
 
@@ -147,6 +161,8 @@ Immutable audit log of every state transition (and other notable events).
 - `payment_attempts(transaction_id, attempt_number)` — unique per transaction
 - `refunds(transaction_id)` — find refunds for a transaction
 - `transaction_events(transaction_id, created_at)` — event timeline
+- `refresh_tokens(user_id, revoked)` — active token lookup
+- `refresh_tokens(token)` — **unique**
 
 ## 5. Relationships
 
@@ -156,6 +172,7 @@ Merchants 1──n Terminals
 Merchants 1──n Transactions
 Terminals 1──n Transactions
 Users    1──n Transactions
+Users    1──n RefreshTokens
 Transactions 1──n PaymentAttempts
 Transactions 1──n TransactionEvents
 Transactions 1──n Refunds
