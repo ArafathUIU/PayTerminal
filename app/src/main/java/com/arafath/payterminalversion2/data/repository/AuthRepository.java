@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.arafath.payterminalversion2.data.Result;
 import com.arafath.payterminalversion2.data.local.dao.MerchantDao;
+import com.arafath.payterminalversion2.data.local.dao.TerminalDao;
 import com.arafath.payterminalversion2.data.local.dao.UserDao;
 import com.arafath.payterminalversion2.data.local.entity.MerchantEntity;
 import com.arafath.payterminalversion2.data.local.entity.UserEntity;
@@ -34,6 +35,7 @@ public class AuthRepository {
     private final TokenStore tokenStore;
     private final UserDao userDao;
     private final MerchantDao merchantDao;
+    private final TerminalDao terminalDao;
     private final ApiErrorParser errorParser;
     private final Executor ioExecutor;
 
@@ -44,6 +46,7 @@ public class AuthRepository {
             TokenStore tokenStore,
             UserDao userDao,
             MerchantDao merchantDao,
+            TerminalDao terminalDao,
             ApiErrorParser errorParser,
             @IoExecutor Executor ioExecutor) {
         this.authApi = authApi;
@@ -51,6 +54,7 @@ public class AuthRepository {
         this.tokenStore = tokenStore;
         this.userDao = userDao;
         this.merchantDao = merchantDao;
+        this.terminalDao = terminalDao;
         this.errorParser = errorParser;
         this.ioExecutor = ioExecutor;
     }
@@ -124,6 +128,7 @@ public class AuthRepository {
             tokenStore.clear();
             userDao.deleteAll();
             merchantDao.deleteAll();
+            terminalDao.deleteAll();
         });
     }
 

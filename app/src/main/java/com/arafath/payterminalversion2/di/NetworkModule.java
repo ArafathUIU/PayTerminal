@@ -47,6 +47,36 @@ public class NetworkModule {
 
     @Provides
     @Singleton
+    @Authless
+    static OkHttpClient provideAuthlessClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS);
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            builder.addInterceptor(logging);
+        }
+
+        return builder.build();
+    }
+
+    @Provides
+    @Singleton
+    @Authless
+    static AuthApi provideRefreshAuthApi(@Authless OkHttpClient client, Gson gson) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.API_BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        return retrofit.create(AuthApi.class);
+    }
+
+    @Provides
+    @Singleton
     static Gson provideGson() {
         return new Gson();
     }

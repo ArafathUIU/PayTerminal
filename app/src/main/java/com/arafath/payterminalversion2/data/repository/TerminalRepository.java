@@ -44,10 +44,6 @@ public class TerminalRepository {
         return terminalDao.observeFirst();
     }
 
-    public void clear() {
-        ioExecutor.execute(terminalDao::deleteAll);
-    }
-
     public void pair(String merchantId, String pairingCode, String name, Consumer<Result<TerminalEntity>> onResult) {
         terminalApi.register(new RegisterTerminalRequest(merchantId, pairingCode, name))
                 .enqueue(new Callback<TerminalResponse>() {

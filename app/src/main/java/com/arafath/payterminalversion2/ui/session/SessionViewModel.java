@@ -8,6 +8,7 @@ import com.arafath.payterminalversion2.data.local.entity.TerminalEntity;
 import com.arafath.payterminalversion2.data.local.entity.UserEntity;
 import com.arafath.payterminalversion2.data.repository.AuthRepository;
 import com.arafath.payterminalversion2.data.repository.TerminalRepository;
+import com.arafath.payterminalversion2.data.session.TokenStore;
 
 import javax.inject.Inject;
 
@@ -15,9 +16,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 /**
  * Drives the app-level session gate: are we logged in, and is a terminal
- * paired? It derives its state from Room, which is the single source of truth
- * for the session mirror, so any login/logout/pairing change is observed
- * reactively by MainActivity.
+ * paired? It derives its state from Room (the session mirror) combined with the
+ * encrypted token store, so any login/logout/pairing/refresh-failure change is
+ * observed reactively by MainActivity.
  */
 @HiltViewModel
 public class SessionViewModel extends ViewModel {
@@ -30,23 +31,32 @@ public class SessionViewModel extends ViewModel {
     private final MediatorLiveData<State> state = new MediatorLiveData<>();
     private boolean userLoaded;
     private boolean terminalLoaded;
+    private boolean tokenLoaded;
 
     @Inject
-    public SessionViewModel(AuthRepository authRepository, TerminalRepository terminalRepository) {
+    public SessionViewModel(
+            AuthRepository authRepository,
+            TerminalRepository terminalRepository,
+            TokenStore tokenStore) {
         this.authRepository = authRepository;
         this.terminalRepository = terminalRepository;
         state.setValue(State.LOADING);
 
         LiveData<UserEntity> user = authRepository.observeUser();
         LiveData<TerminalEntity> terminal = terminalRepository.observeTerminal();
+        LiveData<Boolean> tokenActive = tokenStore.sessionActive();
 
         state.addSource(user, u -> {
             userLoaded = true;
-            recomputeState(u, terminal.getValue());
+            recomputeState(u, terminal.getValue(), tokenActive.getValue());
         });
         state.addSource(terminal, t -> {
             terminalLoaded = true;
-            recomputeState(user.getValue(), t);
+            recomputeState(user.getValue(), t, tokenActive.getValue());
+        });
+        state.addSource(tokenActive, active -> {
+            tokenLoaded = true;
+            recomputeState(user.getValue(), terminal.getValue(), active);
         });
     }
 
@@ -56,13 +66,12 @@ public class SessionViewModel extends ViewModel {
 
     public void logout() {
         authRepository.logout();
-        terminalRepository.clear();
     }
 
-    private void recomputeState(UserEntity user, TerminalEntity terminal) {
-        if (!userLoaded || !terminalLoaded) {
+    private void recomputeState(UserEntity user, TerminalEntity terminal, Boolean tokenActive) {
+        if (!userLoaded || !terminalLoaded || !tokenLoaded) {
             state.setValue(State.LOADING);
-        } else if (user == null) {
+        } else if (tokenActive != Boolean.TRUE || user == null) {
             state.setValue(State.LOGGED_OUT);
         } else if (terminal == null || !terminal.merchantId.equals(user.merchantId)) {
             state.setValue(State.NEEDS_TERMINAL);
