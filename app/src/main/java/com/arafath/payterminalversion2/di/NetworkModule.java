@@ -4,6 +4,8 @@ import com.arafath.payterminalversion2.BuildConfig;
 import com.arafath.payterminalversion2.data.remote.api.AuthApi;
 import com.arafath.payterminalversion2.data.remote.api.MerchantApi;
 import com.arafath.payterminalversion2.data.remote.api.TerminalApi;
+import com.arafath.payterminalversion2.data.remote.interceptor.AuthAuthenticator;
+import com.arafath.payterminalversion2.data.remote.interceptor.AuthInterceptor;
 import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
@@ -25,15 +27,18 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    static OkHttpClient provideOkHttpClient() {
+    static OkHttpClient provideOkHttpClient(AuthInterceptor authInterceptor, AuthAuthenticator authAuthenticator) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
+                .authenticator(authAuthenticator)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS);
 
         if (BuildConfig.DEBUG) {
+            // BASIC logs method + URL + status without leaking token bodies in logcat.
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
             builder.addInterceptor(logging);
         }
 

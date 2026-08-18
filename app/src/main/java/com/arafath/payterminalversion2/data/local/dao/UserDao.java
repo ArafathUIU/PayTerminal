@@ -20,6 +20,9 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     LiveData<UserEntity> observeById(String id);
 
+    @Query("SELECT * FROM users LIMIT 1")
+    LiveData<UserEntity> observeFirst();
+
     @Query("DELETE FROM users")
     void deleteAll();
 }
