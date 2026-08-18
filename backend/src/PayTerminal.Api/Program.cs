@@ -1,13 +1,14 @@
-using Microsoft.AspNetCore.Http.Json;
+using PayTerminal.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Env-driven configuration: ConnectionStrings__Default is used by Docker / local .env
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? string.Empty;
+
+builder.Services.AddInfrastructure(connectionString);
 
 var app = builder.Build();
 
