@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PayTerminal.Domain\PayTerminal.Domain.csproj" />
+    <ProjectReference Include="..\PayTerminal.Application\PayTerminal.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
