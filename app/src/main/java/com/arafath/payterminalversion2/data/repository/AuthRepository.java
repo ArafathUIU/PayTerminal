@@ -15,7 +15,9 @@ import com.arafath.payterminalversion2.data.remote.dto.LoginRequest;
 import com.arafath.payterminalversion2.data.remote.dto.MerchantRegistrationResponse;
 import com.arafath.payterminalversion2.data.remote.dto.RegisterMerchantRequest;
 import com.arafath.payterminalversion2.data.session.TokenStore;
+import com.arafath.payterminalversion2.di.IoExecutor;
 
+import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -33,6 +35,7 @@ public class AuthRepository {
     private final UserDao userDao;
     private final MerchantDao merchantDao;
     private final ApiErrorParser errorParser;
+    private final Executor ioExecutor;
 
     @Inject
     public AuthRepository(
@@ -41,21 +44,19 @@ public class AuthRepository {
             TokenStore tokenStore,
             UserDao userDao,
             MerchantDao merchantDao,
-            ApiErrorParser errorParser) {
+            ApiErrorParser errorParser,
+            @IoExecutor Executor ioExecutor) {
         this.authApi = authApi;
         this.merchantApi = merchantApi;
         this.tokenStore = tokenStore;
         this.userDao = userDao;
         this.merchantDao = merchantDao;
         this.errorParser = errorParser;
+        this.ioExecutor = ioExecutor;
     }
 
     public LiveData<UserEntity> observeUser() {
         return userDao.observeFirst();
-    }
-
-    public UserEntity getUser() {
-        return userDao.getFirst();
     }
 
     public boolean hasSession() {
@@ -94,13 +95,15 @@ public class AuthRepository {
                     public void onResponse(Call<MerchantRegistrationResponse> call, Response<MerchantRegistrationResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             MerchantRegistrationResponse merchant = response.body();
-                            MerchantEntity entity = new MerchantEntity();
-                            entity.merchantId = merchant.merchantId;
-                            entity.businessName = merchant.businessName;
-                            entity.email = merchant.email;
-                            entity.name = name;
-                            entity.phone = phone;
-                            merchantDao.upsert(entity);
+                            ioExecutor.execute(() -> {
+                                MerchantEntity entity = new MerchantEntity();
+                                entity.merchantId = merchant.merchantId;
+                                entity.businessName = merchant.businessName;
+                                entity.email = merchant.email;
+                                entity.name = name;
+                                entity.phone = phone;
+                                merchantDao.upsert(entity);
+                            });
 
                             // Registration does not return tokens; sign the owner in.
                             login(email, password, onResult);
@@ -117,23 +120,27 @@ public class AuthRepository {
     }
 
     public void logout() {
-        tokenStore.clear();
-        userDao.deleteAll();
-        merchantDao.deleteAll();
+        ioExecutor.execute(() -> {
+            tokenStore.clear();
+            userDao.deleteAll();
+            merchantDao.deleteAll();
+        });
     }
 
     private void persistLogin(AuthResponse auth) {
-        tokenStore.saveTokens(
-                auth.accessToken,
-                auth.refreshToken,
-                System.currentTimeMillis() + auth.expiresIn * 1000L);
+        ioExecutor.execute(() -> {
+            tokenStore.saveTokens(
+                    auth.accessToken,
+                    auth.refreshToken,
+                    System.currentTimeMillis() + auth.expiresIn * 1000L);
 
-        UserEntity user = new UserEntity();
-        user.id = auth.user.id;
-        user.name = auth.user.name;
-        user.email = auth.user.email;
-        user.role = auth.user.role;
-        user.merchantId = auth.user.merchantId;
-        userDao.upsert(user);
+            UserEntity user = new UserEntity();
+            user.id = auth.user.id;
+            user.name = auth.user.name;
+            user.email = auth.user.email;
+            user.role = auth.user.role;
+            user.merchantId = auth.user.merchantId;
+            userDao.upsert(user);
+        });
     }
 }

@@ -56,6 +56,7 @@ public class SessionViewModel extends ViewModel {
 
     public void logout() {
         authRepository.logout();
+        terminalRepository.clear();
     }
 
     private void recomputeState(UserEntity user, TerminalEntity terminal) {
@@ -63,7 +64,7 @@ public class SessionViewModel extends ViewModel {
             state.setValue(State.LOADING);
         } else if (user == null) {
             state.setValue(State.LOGGED_OUT);
-        } else if (terminal == null) {
+        } else if (terminal == null || !terminal.merchantId.equals(user.merchantId)) {
             state.setValue(State.NEEDS_TERMINAL);
         } else {
             state.setValue(State.READY);

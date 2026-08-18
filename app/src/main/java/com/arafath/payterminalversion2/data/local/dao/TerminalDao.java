@@ -16,10 +16,13 @@ public interface TerminalDao {
     TerminalEntity getById(String id);
 
     @Query("SELECT * FROM terminals LIMIT 1")
-    TerminalEntity getFirst();
-
-    @Query("SELECT * FROM terminals LIMIT 1")
     LiveData<TerminalEntity> observeFirst();
+
+    @Query("SELECT * FROM terminals WHERE merchant_id = :merchantId LIMIT 1")
+    TerminalEntity getByMerchantId(String merchantId);
+
+    @Query("SELECT * FROM terminals WHERE merchant_id = :merchantId LIMIT 1")
+    LiveData<TerminalEntity> observeByMerchantId(String merchantId);
 
     @Query("DELETE FROM terminals")
     void deleteAll();

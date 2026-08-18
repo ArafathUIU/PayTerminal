@@ -36,13 +36,18 @@ public class RegisterViewModel extends ViewModel {
             return;
         }
 
+        String cleanPhone = phone == null ? null : phone.trim();
+        if (cleanPhone != null && cleanPhone.isEmpty()) {
+            cleanPhone = null;
+        }
+
         loading.setValue(true);
         authRepository.register(
                 cleanName,
                 cleanBusiness,
                 cleanEmail,
                 cleanPassword,
-                phone == null ? null : phone.trim(),
+                cleanPhone,
                 result -> {
                     loading.postValue(false);
                     if (!result.success) {

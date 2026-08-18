@@ -9,7 +9,9 @@ import com.arafath.payterminalversion2.data.remote.ApiErrorParser;
 import com.arafath.payterminalversion2.data.remote.api.TerminalApi;
 import com.arafath.payterminalversion2.data.remote.dto.RegisterTerminalRequest;
 import com.arafath.payterminalversion2.data.remote.dto.TerminalResponse;
+import com.arafath.payterminalversion2.di.IoExecutor;
 
+import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -24,16 +26,26 @@ public class TerminalRepository {
     private final TerminalApi terminalApi;
     private final TerminalDao terminalDao;
     private final ApiErrorParser errorParser;
+    private final Executor ioExecutor;
 
     @Inject
-    public TerminalRepository(TerminalApi terminalApi, TerminalDao terminalDao, ApiErrorParser errorParser) {
+    public TerminalRepository(
+            TerminalApi terminalApi,
+            TerminalDao terminalDao,
+            ApiErrorParser errorParser,
+            @IoExecutor Executor ioExecutor) {
         this.terminalApi = terminalApi;
         this.terminalDao = terminalDao;
         this.errorParser = errorParser;
+        this.ioExecutor = ioExecutor;
     }
 
     public LiveData<TerminalEntity> observeTerminal() {
         return terminalDao.observeFirst();
+    }
+
+    public void clear() {
+        ioExecutor.execute(terminalDao::deleteAll);
     }
 
     public void pair(String merchantId, String pairingCode, String name, Consumer<Result<TerminalEntity>> onResult) {
@@ -43,7 +55,7 @@ public class TerminalRepository {
                     public void onResponse(Call<TerminalResponse> call, Response<TerminalResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             TerminalEntity entity = toEntity(response.body());
-                            terminalDao.upsert(entity);
+                            ioExecutor.execute(() -> terminalDao.upsert(entity));
                             onResult.accept(Result.ok(entity));
                         } else {
                             onResult.accept(Result.error(errorParser.messageFrom(null, response)));

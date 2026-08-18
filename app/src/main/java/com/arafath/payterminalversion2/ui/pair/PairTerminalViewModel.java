@@ -1,8 +1,10 @@
 package com.arafath.payterminalversion2.ui.pair;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.arafath.payterminalversion2.data.local.entity.UserEntity;
 import com.arafath.payterminalversion2.data.repository.AuthRepository;
 import com.arafath.payterminalversion2.data.repository.TerminalRepository;
 
@@ -17,21 +19,26 @@ public class PairTerminalViewModel extends ViewModel {
 
     public final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     public final MutableLiveData<String> error = new MutableLiveData<>();
+    private String merchantId;
+    private final androidx.lifecycle.Observer<UserEntity> userObserver =
+            user -> merchantId = user != null ? user.merchantId : null;
 
     @Inject
     public PairTerminalViewModel(AuthRepository authRepository, TerminalRepository terminalRepository) {
         this.authRepository = authRepository;
         this.terminalRepository = terminalRepository;
+        authRepository.observeUser().observeForever(userObserver);
     }
 
-    public String merchantId() {
-        return authRepository.getUser() != null ? authRepository.getUser().merchantId : null;
+    @Override
+    protected void onCleared() {
+        authRepository.observeUser().removeObserver(userObserver);
+        super.onCleared();
     }
 
     public void pair(String pairingCode, String terminalName) {
         String code = pairingCode == null ? "" : pairingCode.trim();
         String name = terminalName == null ? "" : terminalName.trim();
-        String merchantId = merchantId();
 
         if (code.isEmpty() || name.isEmpty()) {
             error.setValue("Enter the pairing code and a terminal name");
