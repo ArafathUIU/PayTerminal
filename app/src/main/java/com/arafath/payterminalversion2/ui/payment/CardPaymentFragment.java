@@ -61,6 +61,32 @@ public class CardPaymentFragment extends Fragment {
             }
         });
 
+        TextInputEditText expiryInput = view.findViewById(R.id.expiryInput);
+        expiryInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String raw = s.toString().replaceAll("\\D", "");
+                String formatted;
+                if (raw.length() <= 2) {
+                    formatted = raw;
+                } else if (raw.length() <= 4) {
+                    formatted = raw.substring(0, 2) + "/" + raw.substring(2);
+                } else {
+                    formatted = raw.substring(0, 2) + "/" + raw.substring(2, 4);
+                }
+                expiryInput.setText(formatted);
+                expiryInput.setSelection(formatted.length());
+            }
+        });
+
         cardHolderInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

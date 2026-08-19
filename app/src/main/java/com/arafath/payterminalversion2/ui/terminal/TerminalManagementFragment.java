@@ -70,6 +70,14 @@ public class TerminalManagementFragment extends Fragment {
         ((TextView) view.findViewById(R.id.terminalStatusValue)).setText(terminal.status);
         String lastSync = terminal.lastHeartbeatAt == null ? "—" : Time.relative(parseMillis(terminal.lastHeartbeatAt));
         ((TextView) view.findViewById(R.id.lastSyncValue)).setText(lastSync);
+        String networkStatus;
+        if (terminal.lastHeartbeatAt == null) {
+            networkStatus = "—";
+        } else {
+            long diff = System.currentTimeMillis() - parseMillis(terminal.lastHeartbeatAt);
+            networkStatus = diff < 2_000_000 ? "Online" : "Offline";
+        }
+        ((TextView) view.findViewById(R.id.networkStatusValue)).setText(networkStatus);
     }
 
     private void renderMerchant(MerchantEntity merchant) {

@@ -72,7 +72,8 @@ dependencies {
     // Secure storage: Keystore-backed EncryptedSharedPreferences for JWT tokens.
     implementation(libs.security.crypto)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.espresso.core)
+testImplementation(libs.junit)
+testImplementation(libs.mockito)
+androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
 }

@@ -97,7 +97,7 @@ payments/refunds run locally on-device.
 - [x] **Phase 5 — Payment processing (on-device):** success/failure, retry, simulated decline rule
 - [x] **Phase 6 — Reliability:** local persistence, session gate, token refresh, network-failure handling
 - [x] **Phase 7 — History & ops:** history, search/filter, receipts, refunds
-- [ ] **Phase 8 — Polish:** health monitoring, API docs, tests, final polish
+- [x] **Phase 8 — Polish:** health monitoring, API docs, tests, final polish
 
 > **Next milestone candidates:** move payment/refund processing to the backend
 > (`POST /api/v1/payments`, `POST /api/v1/refunds`) using the domain state
