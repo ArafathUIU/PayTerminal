@@ -8,9 +8,23 @@ public final class Time {
     private Time() {
     }
 
+    private static long REF_TIME = System.currentTimeMillis();
+
     /** e.g. "2m ago" or "3h ago" for recent lists. */
     public static String relative(long millis) {
-        long diff = Math.max(0, System.currentTimeMillis() - millis);
+        return relative(millis, REF_TIME);
+    }
+
+    static long currentTimeMillis() {
+        return System.currentTimeMillis();
+    }
+
+    static void setRefTime(long refTime) {
+        REF_TIME = refTime;
+    }
+
+    static String relative(long millis, long now) {
+        long diff = Math.max(0, now - millis);
         long minutes = diff / 60000;
         if (minutes < 1) {
             return "just now";

@@ -1,9 +1,16 @@
 package com.arafath.payterminalversion2.util;
 
-import org.junit.Test;
+import org.junit.*;
 import static org.junit.Assert.*;
 
 public class TimeTest {
+
+    @BeforeClass
+    public static void setUpClass() {
+        // Override the currentTimeMillis() used by Time.relative()
+        // to use a fixed reference time of 500ms after epoch.
+        Time.setRefTime(500L);
+    }
 
     @Test
     public void relative_justNow() {
@@ -12,17 +19,20 @@ public class TimeTest {
 
     @Test
     public void relative_minutesAgo() {
-        assertEquals("5m ago", Time.relative(5 * 60 * 1000));
+        // With ref time = 500ms: diff = 500 - (-299500) = 300000ms = 5min
+        assertEquals("5m ago", Time.relative(-299500));
     }
 
     @Test
     public void relative_hoursAgo() {
-        assertEquals("2h ago", Time.relative(2 * 60 * 60 * 1000));
+        // With ref time = 500ms: diff = 500 - (-7199500) = 7200000ms = 2h
+        assertEquals("2h ago", Time.relative(-7199500));
     }
 
     @Test
     public void relative_daysAgo() {
-        assertEquals("3d ago", Time.relative(3 * 24 * 60 * 60 * 1000));
+        // With ref time = 500ms: diff = 500 - (-259199500) = 259200000ms = 3d
+        assertEquals("3d ago", Time.relative(-259199500));
     }
 
     @Test
