@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.arafath.payterminalversion2.data.local.dao.MerchantDao;
+import com.arafath.payterminalversion2.data.local.dao.PaymentTransactionDao;
 import com.arafath.payterminalversion2.data.local.dao.TerminalDao;
 import com.arafath.payterminalversion2.data.local.dao.UserDao;
 import com.arafath.payterminalversion2.data.local.db.PayTerminalDatabase;
@@ -42,5 +43,10 @@ public class DatabaseModule {
     @Provides
     static TerminalDao provideTerminalDao(PayTerminalDatabase database) {
         return database.terminalDao();
+    }
+
+    @Provides
+    static PaymentTransactionDao providePaymentTransactionDao(PayTerminalDatabase database) {
+        return database.paymentTransactionDao();
     }
 }
