@@ -4,6 +4,15 @@ PostgreSQL 16. All money is stored as `decimal(18,2)` (never floating point).
 Timestamps are `timestamptz` (UTC). Primary keys are UUIDs generated
 server-side.
 
+> **Implementation status (19 Aug 2026):** `merchants`, `users`, `terminals`,
+> and `refresh_tokens` are actively used (auth, registration, pairing).
+> `transactions`, `payment_attempts`, `refunds`, and `transaction_events` are
+> created by the migrations but **not yet written** by any controller — the
+> Android app currently simulates payments/refunds in Room instead. The schema
+> below remains the target contract for when the payment endpoints land.
+> Note: in the live DB these tables are lowercase snake_case with
+> PascalCase-quoted columns (e.g. `terminals."PairingCode"`).
+
 ## 1. Tables
 
 ### Merchants

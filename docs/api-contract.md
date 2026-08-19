@@ -1,7 +1,25 @@
 # PayTerminal — API Contract
 
-Base URL: `http://<host>:5000` locally. All responses are JSON. Protected
-endpoints require `Authorization: Bearer <jwt>`.
+Base URL: `http://localhost:5058` locally (the Android emulator reaches the
+host via `http://10.0.2.2:5058`, see `BuildConfig.API_BASE_URL`). All
+responses are JSON. Protected endpoints require `Authorization: Bearer <jwt>`.
+
+## Implementation status (19 Aug 2026)
+
+| Resource | Endpoints | Status |
+| --- | --- | --- |
+| Auth | `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh` | ✅ implemented |
+| Merchants | `POST /api/v1/merchants/register` | ✅ implemented |
+| Terminals | `POST /api/v1/terminals/register`, `GET /api/v1/terminals/{id}`, `POST /api/v1/terminals/{id}/heartbeat` | ✅ implemented |
+| Health | `GET /api/v1/health` | ✅ implemented |
+| Payments | `POST /api/v1/payments`, `GET /api/v1/payments/{id}`, `POST /api/v1/payments/{id}/cancel` | ⏳ planned (domain exists, no controller) |
+| Transactions | `GET /api/v1/transactions`, `GET /api/v1/transactions/{id}` | ⏳ planned |
+| Refunds | `POST /api/v1/refunds`, `GET /api/v1/refunds/{id}` | ⏳ planned |
+
+Until the payment endpoints are implemented, the Android app **simulates
+payments and refunds locally** in `PaymentRepository` (Room only). See
+[`current-state.md`](current-state.md). The sections below document the target
+contract those endpoints will implement.
 
 ## Headers
 

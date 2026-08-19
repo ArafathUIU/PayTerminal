@@ -52,31 +52,49 @@
 | **ViewModel**    | Holds UI state, delegates to repository, survives configuration change |
 | **Repository**   | Single source of truth for a screen; coordinates remote + local data  |
 | **Remote**       | Retrofit/OkHttp API client for the backend REST contract             |
-| **Local**        | Room: mirrors backend entities, queues offline actions in an outbox  |
+| **Local**        | Room: users, merchants, terminals, and locally-simulated transactions |
 | **DI**           | Hilt wires the graph (Retrofit, OkHttp interceptors, Room DAOs, repos) |
 
-Data flow for a payment:
+### Current implementation status (v2, 19 Aug 2026)
+
+- **Auth, registration, and terminal pairing are real network calls** to the
+  backend (JWT, `AuthInterceptor` + `AuthAuthenticator` refresh).
+- **Payments and refunds are simulated on-device** by
+  `PaymentRepository` (Room only — no network). See
+  [current-state.md](current-state.md) for the full Q&A.
+
+Data flow for a payment (current):
 
 ```
-PaymentFragment
+PaymentProcessingFragment
+      │  amountPaise, method, maskedRef
+      ▼
+PaymentProcessingViewModel      (computes shouldFail: amountPaise % 100 == 99)
       │
       ▼
-PaymentViewModel
-      │
-      ▼
-PaymentRepository
-      ├─────────────► PaymentRemoteDataSource ──► Retrofit ──► ASP.NET Core
-      │                     ▲  on success: sync server response
-      └─────────────► Room (TransactionDao)  ◄──┘    to local DB
-                     outbox row written before network call
+PaymentRepository.process(...)  ── simulated "processor" on a background
+      │                             thread (sleep ≈ round-trip), then
+      ▼                             upsert the transaction
+Room → PaymentTransactionDao   ──► LiveData observers re-render UI
+```
+
+Data flow for auth / pairing (current — real network):
+
+```
+LoginFragment → LoginViewModel → AuthRepository.login()
+      ├──► Retrofit AuthApi.login() ──► ASP.NET Core POST /api/v1/auth/login
+      └──► TokenStore (EncryptedSharedPreferences) + Room users cache
 ```
 
 ### Local persistence & offline behavior
-- Room stores a local mirror of transactions so the merchant can browse
-  history even when the backend is unreachable.
-- The **outbox** table queues outgoing actions (create payment, heartbeat)
-  when offline. On reconnect, queued actions are retried with their original
-  `Idempotency-Key` so no duplicate charge can occur.
+- Room stores the local session cache (user, merchant, terminal) and every
+  transaction/refund created by the payment simulator, so history, receipts,
+  and dashboard stats survive restarts and work even while the backend is
+  unreachable.
+- JWT tokens are kept in Keystore-backed `EncryptedSharedPreferences`; when the
+  access token expires, `AuthAuthenticator` refreshes it transparently and
+  retries the original request. If refresh fails, the session gate returns the
+  user to login.
 - Room entities map 1:1 to the database contract (`docs/database-contract.md`).
 
 ## 3. Backend architecture (layered)
@@ -114,17 +132,22 @@ Application/Domain. No circular dependencies.
 
 ### New payment
 1. Merchant enters amount, selects method (CARD / QR / E_WALLET), confirms.
-2. App writes an outbox row, generates `Idempotency-Key`, calls
-   `POST /api/v1/payments`.
-3. Backend validates, persists `INITIATED → PENDING → PROCESSING`, calls the
-   simulated processor, and moves the transaction to `SUCCESS` or `FAILED`.
-4. App updates local Room state and renders success/failure, with retry for
-   failures.
+2. `PaymentProcessingViewModel` applies the demo decline rule
+   (amount ending in `.99` → `FAILED`) and calls
+   `PaymentRepository.process(...)`.
+3. The on-device simulator writes the transaction to Room (`SUCCESS` or
+   `FAILED`) after a short delay that mimics a processor round-trip.
+4. The app renders success/failure and offers retry for failures.
 
 ### Refund
 1. Merchant opens a `SUCCESS` transaction and requests a refund.
-2. `POST /api/v1/refunds` creates a refund: `REQUESTED → PROCESSING →
-   COMPLETED | REJECTED`. On completion the transaction is marked refunded.
+2. `PaymentRepository.refund(...)` simulates the refund processor and marks
+   the transaction `REFUNDED` (with `refundedAt` + `refundReason`).
+
+> The richer server-driven flows described below (idempotency, attempts,
+> events, `POST /api/v1/payments`, `POST /api/v1/refunds`) are the target
+> design; the corresponding domain code exists in `backend/PayTerminal.Domain`
+> but is **not yet wired to controllers**.
 
 ### Terminal health
 - The terminal posts a heartbeat (`POST /api/v1/terminals/{id}/heartbeat`) on a
