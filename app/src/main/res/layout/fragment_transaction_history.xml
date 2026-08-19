@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_grid"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/transactions_title"
+            android:textAppearance="@style/TextAppearance.PayTerminal.Headline" />
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/home_transactions"
+            android:src="@drawable/ic_back" />
+    </LinearLayout>
+
+    <!-- Search -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/search_hint"
+        app:boxStrokeColor="@color/orange"
+        app:boxStrokeWidthFocused="2dp"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/orange"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/charcoal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Method filter chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterAll"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_all" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterCard"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_card" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterQr"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_qr" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterWallet"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_wallet" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterSuccess"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_success" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterFailed"
+                style="@style/Widget.PayTerminal.FilterChip"
+                android:text="@string/filter_failed" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/listContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/transactionList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
+
+        <TextView
+            android:id="@+id/emptyText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/home_empty_recent"
+            android:textColor="@color/gray_text"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

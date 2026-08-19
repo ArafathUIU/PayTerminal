@@ -105,4 +105,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Filter chip -->
+    <style name="Widget.PayTerminal.FilterChip" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="strokeColor">@color/orange_light</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingHorizontal">16dp</item>
+    </style>
+
 </resources>
