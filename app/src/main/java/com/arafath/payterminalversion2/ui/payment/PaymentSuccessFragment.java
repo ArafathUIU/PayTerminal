@@ -41,8 +41,16 @@ public class PaymentSuccessFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String txId = PaymentSuccessFragmentArgs.fromBundle(requireArguments()).getTransactionId();
-        transaction = paymentRepository.getById(txId);
 
+        paymentRepository.observeById(txId).observe(getViewLifecycleOwner(), this::render);
+    }
+
+    private void render(PaymentTransactionEntity transaction) {
+        if (transaction == null) {
+            return;
+        }
+        this.transaction = transaction;
+        View view = requireView();
         ((TextView) view.findViewById(R.id.amountText)).setText(Money.format(transaction.amountPaise));
         ((TextView) view.findViewById(R.id.transactionIdText)).setText(transaction.id);
         ((TextView) view.findViewById(R.id.methodText)).setText(transaction.method);

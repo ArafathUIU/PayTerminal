@@ -28,6 +28,9 @@ public interface PaymentTransactionDao {
     @Query("SELECT * FROM payment_transactions WHERE id = :id LIMIT 1")
     PaymentTransactionEntity getById(String id);
 
+    @Query("SELECT * FROM payment_transactions WHERE id = :id LIMIT 1")
+    LiveData<PaymentTransactionEntity> observeById(String id);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM payment_transactions WHERE merchant_id = :merchantId AND status = 'SUCCESS'")
     LiveData<Long> observeTotalSuccessfulAmount(String merchantId);
 

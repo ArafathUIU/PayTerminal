@@ -40,10 +40,15 @@ public class PaymentFailedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String txId = PaymentFailedFragmentArgs.fromBundle(requireArguments()).getTransactionId();
-        transaction = paymentRepository.getById(txId);
 
-        ((TextView) view.findViewById(R.id.amountText)).setText(Money.format(transaction.amountPaise));
-        ((TextView) view.findViewById(R.id.transactionIdText)).setText(transaction.id);
+        paymentRepository.observeById(txId).observe(getViewLifecycleOwner(), transaction -> {
+            if (transaction == null) {
+                return;
+            }
+            this.transaction = transaction;
+            ((TextView) view.findViewById(R.id.amountText)).setText(Money.format(transaction.amountPaise));
+            ((TextView) view.findViewById(R.id.transactionIdText)).setText(transaction.id);
+        });
 
         MaterialButton retryButton = view.findViewById(R.id.retryButton);
         retryButton.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_failed_to_retry));

@@ -2,6 +2,7 @@ package com.arafath.payterminalversion2.ui.transactions;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.arafath.payterminalversion2.data.local.entity.PaymentTransactionEntity;
@@ -19,6 +20,8 @@ public class TransactionDetailsViewModel extends ViewModel {
     private final AuthRepository authRepository;
 
     private final MutableLiveData<PaymentTransactionEntity> transaction = new MutableLiveData<>();
+    private LiveData<PaymentTransactionEntity> txLiveData;
+    private final Observer<PaymentTransactionEntity> txObserver = transaction::setValue;
 
     @Inject
     public TransactionDetailsViewModel(
@@ -38,7 +41,18 @@ public class TransactionDetailsViewModel extends ViewModel {
     }
 
     public void load(String transactionId) {
-        PaymentTransactionEntity tx = paymentRepository.getById(transactionId);
-        transaction.setValue(tx);
+        if (txLiveData != null) {
+            txLiveData.removeObserver(txObserver);
+        }
+        txLiveData = paymentRepository.observeById(transactionId);
+        txLiveData.observeForever(txObserver);
+    }
+
+    @Override
+    protected void onCleared() {
+        if (txLiveData != null) {
+            txLiveData.removeObserver(txObserver);
+        }
+        super.onCleared();
     }
 }

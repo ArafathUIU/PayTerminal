@@ -2,14 +2,13 @@ package com.arafath.payterminalversion2.ui.refund;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.arafath.payterminalversion2.data.local.entity.PaymentTransactionEntity;
-import com.arafath.payterminalversion2.data.local.entity.TerminalEntity;
 import com.arafath.payterminalversion2.data.local.entity.UserEntity;
 import com.arafath.payterminalversion2.data.repository.AuthRepository;
 import com.arafath.payterminalversion2.data.repository.PaymentRepository;
-import com.arafath.payterminalversion2.data.repository.TerminalRepository;
 
 import javax.inject.Inject;
 
@@ -25,6 +24,17 @@ public class RefundViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>(null);
 
     private PaymentTransactionEntity transaction;
+    private LiveData<PaymentTransactionEntity> txLiveData;
+    private final Observer<PaymentTransactionEntity> txObserver = tx -> {
+        transaction = tx;
+        if (tx != null) {
+            originalAmount.setValue(tx.amountPaise);
+        }
+    };
+
+    private UserEntity user;
+    private LiveData<UserEntity> userLiveData;
+    private final Observer<UserEntity> userObserver = u -> user = u;
 
     @Inject
     public RefundViewModel(
@@ -47,10 +57,26 @@ public class RefundViewModel extends ViewModel {
     }
 
     public void load(String transactionId) {
-        transaction = paymentRepository.getById(transactionId);
-        if (transaction != null) {
-            originalAmount.setValue(transaction.amountPaise);
+        if (txLiveData != null) {
+            txLiveData.removeObserver(txObserver);
         }
+        txLiveData = paymentRepository.observeById(transactionId);
+        txLiveData.observeForever(txObserver);
+        if (userLiveData == null) {
+            userLiveData = authRepository.observeUser();
+            userLiveData.observeForever(userObserver);
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        if (txLiveData != null) {
+            txLiveData.removeObserver(txObserver);
+        }
+        if (userLiveData != null) {
+            userLiveData.removeObserver(userObserver);
+        }
+        super.onCleared();
     }
 
     public void confirm(long refundPaise, String reason) {
@@ -62,7 +88,6 @@ public class RefundViewModel extends ViewModel {
             error.setValue("Refund amount must be between 1 and the original amount");
             return;
         }
-        UserEntity user = authRepository.observeUser().getValue();
         if (user == null) {
             error.setValue("Not signed in");
             return;

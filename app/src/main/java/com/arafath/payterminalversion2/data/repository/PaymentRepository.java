@@ -60,6 +60,10 @@ public class PaymentRepository {
         return dao.getById(id);
     }
 
+    public LiveData<PaymentTransactionEntity> observeById(String id) {
+        return dao.observeById(id);
+    }
+
     /**
      * Simulates processing a payment. Returns the persisted transaction via the
      * callback once the "processor" responds.

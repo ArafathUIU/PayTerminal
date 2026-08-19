@@ -55,7 +55,6 @@ public class DigitalReceiptFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String txId = DigitalReceiptFragmentArgs.fromBundle(requireArguments()).getTransactionId();
-        transaction = paymentRepository.getById(txId);
 
         authRepository.observeUser().observe(getViewLifecycleOwner(), user -> {
             if (user == null) {
@@ -70,16 +69,31 @@ public class DigitalReceiptFragment extends Fragment {
                     });
         });
 
-        renderReceipt();
+        paymentRepository.observeById(txId).observe(getViewLifecycleOwner(), tx -> {
+            if (tx == null) {
+                return;
+            }
+            transaction = tx;
+            renderReceipt();
+        });
+
         renderMerchantName();
 
         view.findViewById(R.id.backButton).setOnClickListener(v -> requireActivity().onBackPressed());
 
         MaterialButton saveButton = view.findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(v -> saveReceipt());
+        saveButton.setOnClickListener(v -> {
+            if (transaction != null) {
+                saveReceipt();
+            }
+        });
 
         MaterialButton shareButton = view.findViewById(R.id.shareButton);
-        shareButton.setOnClickListener(v -> shareReceipt());
+        shareButton.setOnClickListener(v -> {
+            if (transaction != null) {
+                shareReceipt();
+            }
+        });
     }
 
     private void renderMerchantName() {

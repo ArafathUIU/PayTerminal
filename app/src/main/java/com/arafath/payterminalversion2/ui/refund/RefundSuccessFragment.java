@@ -37,11 +37,15 @@ public class RefundSuccessFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String txId = RefundSuccessFragmentArgs.fromBundle(requireArguments()).getTransactionId();
-        PaymentTransactionEntity tx = paymentRepository.getById(txId);
 
-        ((TextView) view.findViewById(R.id.refundedAmountText)).setText(Money.format(tx.amountPaise));
-        ((TextView) view.findViewById(R.id.transactionIdText)).setText(tx.id);
-        ((TextView) view.findViewById(R.id.dateTimeText)).setText(Time.dateTime(tx.refundedAt));
+        paymentRepository.observeById(txId).observe(getViewLifecycleOwner(), tx -> {
+            if (tx == null) {
+                return;
+            }
+            ((TextView) view.findViewById(R.id.refundedAmountText)).setText(Money.format(tx.amountPaise));
+            ((TextView) view.findViewById(R.id.transactionIdText)).setText(tx.id);
+            ((TextView) view.findViewById(R.id.dateTimeText)).setText(Time.dateTime(tx.refundedAt));
+        });
 
         view.findViewById(R.id.doneButton).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_refund_success_to_home));
