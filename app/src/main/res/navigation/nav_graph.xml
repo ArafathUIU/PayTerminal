@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
+    <!-- 1. Splash -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.arafath.payterminalversion2.ui.splash.SplashFragment"
+        android:label="PayTerminal"
+        tools:layout="@layout/fragment_splash" />
+
+    <!-- 2. Login -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.arafath.payterminalversion2.ui.auth.LoginFragment"
@@ -15,6 +23,7 @@
             app:destination="@id/registerFragment" />
     </fragment>
 
+    <!-- 3. Register -->
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.arafath.payterminalversion2.ui.auth.RegisterFragment"
@@ -27,15 +36,282 @@
             app:popUpToInclusive="false" />
     </fragment>
 
+    <!-- 4. Terminal Pairing -->
     <fragment
         android:id="@+id/pairTerminalFragment"
         android:name="com.arafath.payterminalversion2.ui.pair.PairTerminalFragment"
         android:label="Pair Terminal"
-        tools:layout="@layout/fragment_pair_terminal" />
+        tools:layout="@layout/fragment_pair_terminal">
+        <action
+            android:id="@+id/action_pair_to_pair_success"
+            app:destination="@id/pairSuccessFragment" />
+    </fragment>
 
+    <!-- 5. Pairing Success -->
+    <fragment
+        android:id="@+id/pairSuccessFragment"
+        android:name="com.arafath.payterminalversion2.ui.pair.PairSuccessFragment"
+        android:label="Terminal Paired"
+        tools:layout="@layout/fragment_pair_success" />
+
+    <!-- 6. Home / Dashboard -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.arafath.payterminalversion2.ui.home.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_new_payment"
+            app:destination="@id/newPaymentFragment" />
+        <action
+            android:id="@+id/action_home_to_transactions"
+            app:destination="@id/transactionHistoryFragment" />
+        <action
+            android:id="@+id/action_home_to_terminal"
+            app:destination="@id/terminalManagementFragment" />
+        <action
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <!-- 7. New Payment - Enter Amount -->
+    <fragment
+        android:id="@+id/newPaymentFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.NewPaymentFragment"
+        android:label="New Payment"
+        tools:layout="@layout/fragment_new_payment">
+        <action
+            android:id="@+id/action_new_payment_to_method"
+            app:destination="@id/paymentMethodFragment" />
+    </fragment>
+
+    <!-- 8. Payment Method Selection -->
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.PaymentMethodFragment"
+        android:label="Payment Method"
+        tools:layout="@layout/fragment_payment_method">
+        <argument
+            android:name="amountPaise"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_method_to_card"
+            app:destination="@id/cardPaymentFragment" />
+        <action
+            android:id="@+id/action_method_to_qr"
+            app:destination="@id/qrPaymentFragment" />
+        <action
+            android:id="@+id/action_method_to_wallet"
+            app:destination="@id/walletPaymentFragment" />
+    </fragment>
+
+    <!-- 9. Card Payment -->
+    <fragment
+        android:id="@+id/cardPaymentFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.CardPaymentFragment"
+        android:label="Card Payment"
+        tools:layout="@layout/fragment_card_payment">
+        <argument
+            android:name="amountPaise"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_card_to_processing"
+            app:destination="@id/paymentProcessingFragment" />
+    </fragment>
+
+    <!-- 10. QR Payment -->
+    <fragment
+        android:id="@+id/qrPaymentFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.QrPaymentFragment"
+        android:label="QR Payment"
+        tools:layout="@layout/fragment_qr_payment">
+        <argument
+            android:name="amountPaise"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_qr_to_processing"
+            app:destination="@id/paymentProcessingFragment" />
+    </fragment>
+
+    <!-- 11. E-Wallet Payment -->
+    <fragment
+        android:id="@+id/walletPaymentFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.WalletPaymentFragment"
+        android:label="E-Wallet"
+        tools:layout="@layout/fragment_wallet_payment">
+        <argument
+            android:name="amountPaise"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_wallet_to_processing"
+            app:destination="@id/paymentProcessingFragment" />
+    </fragment>
+
+    <!-- 12. Payment Processing -->
+    <fragment
+        android:id="@+id/paymentProcessingFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.PaymentProcessingFragment"
+        android:label="Processing"
+        tools:layout="@layout/fragment_payment_processing">
+        <argument
+            android:name="amountPaise"
+            app:argType="long" />
+        <argument
+            android:name="method"
+            app:argType="string" />
+        <argument
+            android:name="maskedRef"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_processing_to_success"
+            app:destination="@id/paymentSuccessFragment" />
+        <action
+            android:id="@+id/action_processing_to_failed"
+            app:destination="@id/paymentFailedFragment" />
+    </fragment>
+
+    <!-- 13. Payment Success -->
+    <fragment
+        android:id="@+id/paymentSuccessFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.PaymentSuccessFragment"
+        android:label="Payment Successful"
+        tools:layout="@layout/fragment_payment_success">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_success_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_success_to_new_payment"
+            app:destination="@id/newPaymentFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_success_to_receipt"
+            app:destination="@id/digitalReceiptFragment" />
+    </fragment>
+
+    <!-- 14. Payment Failed -->
+    <fragment
+        android:id="@+id/paymentFailedFragment"
+        android:name="com.arafath.payterminalversion2.ui.payment.PaymentFailedFragment"
+        android:label="Payment Failed"
+        tools:layout="@layout/fragment_payment_failed">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_failed_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_failed_to_retry"
+            app:destination="@id/newPaymentFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- 15. Transaction History -->
+    <fragment
+        android:id="@+id/transactionHistoryFragment"
+        android:name="com.arafath.payterminalversion2.ui.transactions.TransactionHistoryFragment"
+        android:label="Transactions"
+        tools:layout="@layout/fragment_transaction_history">
+        <action
+            android:id="@+id/action_history_to_details"
+            app:destination="@id/transactionDetailsFragment" />
+        <action
+            android:id="@+id/action_history_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- 16. Transaction Details -->
+    <fragment
+        android:id="@+id/transactionDetailsFragment"
+        android:name="com.arafath.payterminalversion2.ui.transactions.TransactionDetailsFragment"
+        android:label="Transaction Details"
+        tools:layout="@layout/fragment_transaction_details">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_details_to_receipt"
+            app:destination="@id/digitalReceiptFragment" />
+        <action
+            android:id="@+id/action_details_to_refund"
+            app:destination="@id/refundFragment" />
+    </fragment>
+
+    <!-- 17. Digital Receipt -->
+    <fragment
+        android:id="@+id/digitalReceiptFragment"
+        android:name="com.arafath.payterminalversion2.ui.transactions.DigitalReceiptFragment"
+        android:label="Receipt"
+        tools:layout="@layout/fragment_digital_receipt">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+    </fragment>
+
+    <!-- 18. Refund -->
+    <fragment
+        android:id="@+id/refundFragment"
+        android:name="com.arafath.payterminalversion2.ui.refund.RefundFragment"
+        android:label="Refund"
+        tools:layout="@layout/fragment_refund">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_refund_to_success"
+            app:destination="@id/refundSuccessFragment" />
+    </fragment>
+
+    <!-- 19. Refund Success -->
+    <fragment
+        android:id="@+id/refundSuccessFragment"
+        android:name="com.arafath.payterminalversion2.ui.refund.RefundSuccessFragment"
+        android:label="Refund Successful"
+        tools:layout="@layout/fragment_refund_success">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_refund_success_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- 20. Terminal Management -->
+    <fragment
+        android:id="@+id/terminalManagementFragment"
+        android:name="com.arafath.payterminalversion2.ui.terminal.TerminalManagementFragment"
+        android:label="Terminal"
+        tools:layout="@layout/fragment_terminal_management">
+        <action
+            android:id="@+id/action_terminal_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- 21. Settings / Merchant Profile -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.arafath.payterminalversion2.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

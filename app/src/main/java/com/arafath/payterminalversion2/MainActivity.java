@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void onSessionState(SessionViewModel.State state) {
         switch (state) {
+            case LOADING:
+                // Stay on the splash (start destination) while the session loads.
+                break;
             case NEEDS_TERMINAL:
                 navigateTo(R.id.pairTerminalFragment);
                 break;
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 navigateTo(R.id.homeFragment);
                 break;
             default:
-                // LOADING and LOGGED_OUT both resolve to the login screen.
+                // LOGGED_OUT resolves to the login screen.
                 navigateTo(R.id.loginFragment);
                 break;
         }

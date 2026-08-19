@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">PayTerminal</string>
+    <string name="splash_subtitle">Payment Terminal</string>
 
     <string name="login_subtitle">Sign in to your merchant account</string>
+    <string name="welcome_back">Welcome back</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="phone_hint">Phone (optional)</string>
+    <string name="remember_me">Remember me</string>
     <string name="login_button">Sign in</string>
     <string name="no_account_link">No account? Register your business</string>
     <string name="have_account_link">Already have an account? Sign in</string>
@@ -13,6 +16,7 @@
     <string name="register_subtitle">Creates an owner account and merchant</string>
     <string name="name_hint">Your name</string>
     <string name="business_hint">Business name</string>
+    <string name="confirm_password_hint">Confirm password</string>
     <string name="register_button">Create account</string>
 
     <string name="pair_title">Pair your terminal</string>
@@ -20,10 +24,129 @@
     <string name="pairing_code_hint">Pairing code</string>
     <string name="terminal_name_hint">Terminal name</string>
     <string name="pair_button">Pair terminal</string>
+    <string name="pair_secure">Secure pairing</string>
+    <string name="pair_provisioning">Terminal provisioning</string>
+
+    <string name="pair_success_title">Terminal Paired Successfully</string>
+    <string name="pair_success_subtitle">Your terminal is online and ready to take payments</string>
+    <string name="online_status">Online</string>
+    <string name="continue_button">Continue</string>
 
     <string name="terminal_card_title">Paired terminal</string>
     <string name="logout_button">Log out</string>
     <string name="home_greeting">Welcome, %1$s</string>
     <string name="home_terminal_status">Status: %1$s</string>
     <string name="home_merchant_id">Merchant: %1$s</string>
+    <string name="home_today_sales">Today\'s total sales</string>
+    <string name="home_transaction_count">Transactions</string>
+    <string name="home_successful">Successful</string>
+    <string name="home_failed">Failed</string>
+    <string name="home_refunded">Refunded</string>
+    <string name="home_new_payment">New Payment</string>
+    <string name="home_transactions">Transactions</string>
+    <string name="home_terminal">Terminal</string>
+    <string name="home_recent">Recent transactions</string>
+    <string name="home_empty_recent">No transactions yet. Start a new payment to see them here.</string>
+
+    <string name="new_payment_title">New Payment</string>
+    <string name="new_payment_amount_hint">Enter amount</string>
+    <string name="new_payment_continue">Continue</string>
+    <string name="key_clear">Clear</string>
+
+    <string name="method_title">Payment Method</string>
+    <string name="method_subtitle">Select how the customer wants to pay</string>
+    <string name="method_card">Card</string>
+    <string name="method_card_desc">Debit or credit card</string>
+    <string name="method_qr">QR Payment</string>
+    <string name="method_qr_desc">Scan and pay</string>
+    <string name="method_wallet">E-Wallet</string>
+    <string name="method_wallet_desc">Mobile wallet</string>
+
+    <string name="card_title">Card Payment</string>
+    <string name="card_number_hint">Card number</string>
+    <string name="card_expiry_hint">MM/YY</string>
+    <string name="card_cvv_hint">CVV</string>
+    <string name="card_holder_hint">Cardholder name</string>
+    <string name="card_process">Process Payment</string>
+    <string name="card_secure">Secured by PayTerminal</string>
+
+    <string name="qr_title">QR Payment</string>
+    <string name="qr_scanner">Scan QR code</string>
+    <string name="qr_simulate">Simulate Scan</string>
+
+    <string name="wallet_title">E-Wallet Payment</string>
+    <string name="wallet_number_hint">Customer mobile number</string>
+    <string name="wallet_process">Process Payment</string>
+
+    <string name="processing_title">Processing Payment</string>
+    <string name="processing_subtitle">Connecting to payment processor…</string>
+    <string name="processing_initiated">Initiated</string>
+    <string name="processing_pending">Pending</string>
+    <string name="processing_in_progress">Processing</string>
+
+    <string name="payment_success_title">Payment Successful</string>
+    <string name="view_receipt">View Receipt</string>
+    <string name="new_payment_again">New Payment</string>
+
+    <string name="payment_failed_title">Payment Failed</string>
+    <string name="payment_failed_reason">The payment processor declined the transaction.</string>
+    <string name="retry_payment">Retry Payment</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="transactions_title">Transactions</string>
+    <string name="search_hint">Search transactions</string>
+    <string name="filter_all">All</string>
+    <string name="filter_card">Card</string>
+    <string name="filter_qr">QR</string>
+    <string name="filter_wallet">Wallet</string>
+    <string name="filter_success">Successful</string>
+    <string name="filter_failed">Failed</string>
+
+    <string name="details_title">Transaction Details</string>
+    <string name="details_amount">Amount</string>
+    <string name="details_currency">Currency</string>
+    <string name="details_method">Payment method</string>
+    <string name="details_status">Status</string>
+    <string name="details_terminal">Terminal</string>
+    <string name="details_merchant">Merchant</string>
+    <string name="details_created">Created</string>
+    <string name="details_processed">Processed</string>
+    <string name="details_reference">Payment reference</string>
+    <string name="details_id">Transaction ID</string>
+
+    <string name="receipt_title">Digital Receipt</string>
+    <string name="receipt_save">Save Receipt</string>
+    <string name="receipt_share">Share Receipt</string>
+    <string name="receipt_thanks">Thank you</string>
+
+    <string name="refund_title">Refund</string>
+    <string name="refund_original">Original transaction</string>
+    <string name="refund_original_amount">Original amount</string>
+    <string name="refund_amount_hint">Refund amount</string>
+    <string name="refund_reason_hint">Refund reason (optional)</string>
+    <string name="refund_confirm">Confirm Refund</string>
+    <string name="refund_warning">Refunds are irreversible and will be returned to the customer\'s payment method.</string>
+
+    <string name="refund_success_title">Refund Successful</string>
+    <string name="refund_success_subtitle">The amount has been returned to the customer.</string>
+    <string name="refunded_amount">Refunded amount</string>
+    <string name="done">Done</string>
+
+    <string name="terminal_title">Terminal Management</string>
+    <string name="terminal_status">Status</string>
+    <string name="terminal_network">Network status</string>
+    <string name="terminal_last_sync">Last synchronization</string>
+    <string name="terminal_version">Software version</string>
+    <string name="terminal_device">Device information</string>
+    <string name="terminal_merchant">Merchant</string>
+    <string name="terminal_online">Online</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_merchant">Merchant Profile</string>
+    <string name="settings_terminal">Terminal Settings</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_session">Session</string>
+    <string name="settings_about">About PayTerminal</string>
+    <string name="settings_version">Version %1$s</string>
 </resources>

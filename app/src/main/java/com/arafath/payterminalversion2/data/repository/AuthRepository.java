@@ -63,6 +63,10 @@ public class AuthRepository {
         return userDao.observeFirst();
     }
 
+    public LiveData<MerchantEntity> observeMerchant(String merchantId) {
+        return merchantDao.observeById(merchantId);
+    }
+
     public boolean hasSession() {
         return tokenStore.hasSession();
     }
