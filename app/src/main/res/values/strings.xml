@@ -55,6 +55,7 @@
 
     <string name="method_title">Payment Method</string>
     <string name="method_subtitle">Select how the customer wants to pay</string>
+    <string name="payment_method">Choose payment method</string>
     <string name="method_card">Card</string>
     <string name="method_card_desc">Debit or credit card</string>
     <string name="method_qr">QR Payment</string>

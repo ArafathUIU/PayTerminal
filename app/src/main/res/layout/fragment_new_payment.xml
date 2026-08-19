@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_grid"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/new_payment_title"
+        android:textAppearance="@style/TextAppearance.PayTerminal.Headline" />
+
+    <TextView
+        android:id="@+id/terminalStatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/gray_text"
+        android:textSize="13sp"
+        tools:text="TERM-0002 · Online" />
+
+    <!-- Amount display -->
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:textColor="@color/charcoal"
+        android:textSize="56sp"
+        android:textStyle="bold"
+        tools:text="৳0" />
+
+    <!-- Keypad -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/key1"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/key2"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="2" />
+
+        <TextView
+            android:id="@+id/key3"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/key4"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="4" />
+
+        <TextView
+            android:id="@+id/key5"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="5" />
+
+        <TextView
+            android:id="@+id/key6"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/key7"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="7" />
+
+        <TextView
+            android:id="@+id/key8"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="8" />
+
+        <TextView
+            android:id="@+id/key9"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="9" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/keyClear"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="@string/key_clear" />
+
+        <TextView
+            android:id="@+id/key0"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/keyBack"
+            style="@style/Widget.PayTerminal.Key"
+            android:text="⌫" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/continueButton"
+        style="@style/Widget.PayTerminal.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_payment_continue" />
+</LinearLayout>
