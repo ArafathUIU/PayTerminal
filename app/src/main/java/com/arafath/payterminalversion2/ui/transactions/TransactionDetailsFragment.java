@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import com.arafath.payterminalversion2.R;
 import com.arafath.payterminalversion2.data.local.entity.MerchantEntity;
 import com.arafath.payterminalversion2.data.local.entity.PaymentTransactionEntity;
+import com.arafath.payterminalversion2.data.local.entity.UserEntity;
 import com.arafath.payterminalversion2.util.Money;
 import com.arafath.payterminalversion2.util.Time;
 import com.google.android.material.button.MaterialButton;
@@ -28,6 +29,8 @@ public class TransactionDetailsFragment extends Fragment {
 
     private TransactionDetailsViewModel viewModel;
     private String transactionId;
+    private MaterialButton refundButton;
+    private boolean isOwner;
 
     @Nullable
     @Override
@@ -43,10 +46,19 @@ public class TransactionDetailsFragment extends Fragment {
 
         view.findViewById(R.id.backButton).setOnClickListener(v ->
                 Navigation.findNavController(v).popBackStack());
+        refundButton = view.findViewById(R.id.refundButton);
 
         viewModel.transaction().observe(getViewLifecycleOwner(), this::render);
         viewModel.merchant().observe(getViewLifecycleOwner(), this::renderMerchant);
+        viewModel.user().observe(getViewLifecycleOwner(), this::renderUser);
         viewModel.load(transactionId);
+    }
+
+    private void renderUser(UserEntity user) {
+        if (user != null) {
+            isOwner = user.isOwner();
+            refundButton.setVisibility(isOwner ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void render(PaymentTransactionEntity tx) {
@@ -70,9 +82,9 @@ public class TransactionDetailsFragment extends Fragment {
         status.setTextColor(ContextCompat.getColor(requireContext(),
                 ok ? R.color.success : R.color.error));
 
-        MaterialButton refundButton = view.findViewById(R.id.refundButton);
-        boolean refundable = PaymentTransactionEntity.STATUS_SUCCESS.equals(tx.status);
+        boolean refundable = PaymentTransactionEntity.STATUS_SUCCESS.equals(tx.status) && isOwner;
         refundButton.setEnabled(refundable);
+        refundButton.setVisibility(isOwner ? View.VISIBLE : View.GONE);
         refundButton.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putString("transactionId", tx.id);

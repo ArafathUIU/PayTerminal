@@ -9,7 +9,18 @@ processing is **simulated locally on the device** and persisted in Room.
 > banking or bKash/Nagad/acquire integration, and the payment processor is
 > simulated on-device. The value is in the production-shaped architecture:
 > MVVM, Hilt, Room, Retrofit/OkHttp with token refresh, a session state
-> machine, transaction history, receipts, and refunds.
+> machine, transaction history, receipts, refunds, and role-based access
+> (OWNER vs CASHIER).
+
+## Roles
+
+Users have a role from the backend (`OWNER` / `CASHIER`, from the merchant
+registration or seeded staff accounts).
+
+- **Payments** (any method), history, receipts: available to **both** roles.
+- **Refunds** and **Terminal Management**: **OWNER only** — the Terminal tab is
+  hidden and the Refund button is hidden for CASHIER users (the ViewModels
+  also enforce it as a safety net).
 
 ## How a payment works
 

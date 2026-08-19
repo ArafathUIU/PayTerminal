@@ -92,6 +92,10 @@ public class RefundViewModel extends ViewModel {
             error.setValue("Not signed in");
             return;
         }
+        if (!user.isOwner()) {
+            error.setValue("Only the business owner can refund payments");
+            return;
+        }
         refunded.setValue(false);
         error.setValue(null);
         paymentRepository.refund(transaction, refundPaise, reason, user, result -> {

@@ -23,4 +23,8 @@ public class UserEntity {
 
     @ColumnInfo(name = "merchant_id")
     public String merchantId;
+
+    public boolean isOwner() {
+        return "Owner".equalsIgnoreCase(role);
+    }
 }

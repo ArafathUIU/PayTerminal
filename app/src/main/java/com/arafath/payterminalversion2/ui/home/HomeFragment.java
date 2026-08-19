@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
     private TextView transactionCountText;
     private TextView successfulCountText;
     private TextView failedCountText;
+    private View terminalButton;
     private LinearLayout recentList;
     private TextView emptyRecentText;
 
@@ -65,10 +66,11 @@ public class HomeFragment extends Fragment {
         failedCountText = view.findViewById(R.id.failedCountText);
         recentList = view.findViewById(R.id.recentList);
         emptyRecentText = view.findViewById(R.id.emptyRecentText);
+        terminalButton = view.findViewById(R.id.terminalButton);
 
         view.findViewById(R.id.newPaymentButton).setOnClickListener(v -> navigate(R.id.action_home_to_new_payment));
         view.findViewById(R.id.transactionsButton).setOnClickListener(v -> navigate(R.id.action_home_to_transactions));
-        view.findViewById(R.id.terminalButton).setOnClickListener(v -> navigate(R.id.action_home_to_terminal));
+        terminalButton.setOnClickListener(v -> navigate(R.id.action_home_to_terminal));
         view.findViewById(R.id.settingsButton).setOnClickListener(v -> navigate(R.id.action_home_to_settings));
 
         viewModel.user.observe(getViewLifecycleOwner(), this::renderUser);
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment {
     private void renderUser(UserEntity user) {
         if (user != null) {
             greetingText.setText(getString(R.string.home_greeting, user.name));
+            terminalButton.setVisibility(user.isOwner() ? View.VISIBLE : View.GONE);
         }
     }
 

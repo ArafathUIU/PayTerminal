@@ -37,6 +37,19 @@ LoginFragment → LoginViewModel → AuthRepository.login()
 - Tokens deliberately **never** live in Room; they live in
   Keystore-backed `EncryptedSharedPreferences` (`payterminal_tokens`).
 
+### Roles (OWNER / CASHIER)
+
+`UserEntity.role` comes from the backend (`"Owner"` / `"Cashier"`). The UI
+is role-gated:
+
+| Capability | OWNER | CASHIER |
+| --- | --- | --- |
+| Payments (CARD / QR / WALLET) | ✅ | ✅ |
+| History, search/filter, receipts | ✅ | ✅ |
+| Settings / log out | ✅ | ✅ |
+| **Refunds** | ✅ | ❌ (button hidden; `RefundViewModel` also blocks) |
+| **Terminal Management** | ✅ | ❌ (tab hidden on Home; fragment guard as fallback) |
+
 ## 2. Where are Merchant, User and Terminal represented?
 
 Every layer has its own shape:

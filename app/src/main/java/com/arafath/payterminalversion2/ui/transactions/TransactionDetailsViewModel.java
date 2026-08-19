@@ -40,6 +40,10 @@ public class TransactionDetailsViewModel extends ViewModel {
                 u -> u == null ? null : authRepository.observeMerchant(u.merchantId));
     }
 
+    public LiveData<UserEntity> user() {
+        return authRepository.observeUser();
+    }
+
     public void load(String transactionId) {
         if (txLiveData != null) {
             txLiveData.removeObserver(txObserver);

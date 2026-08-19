@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.arafath.payterminalversion2.BuildConfig;
 import com.arafath.payterminalversion2.R;
 import com.arafath.payterminalversion2.data.local.entity.MerchantEntity;
 import com.arafath.payterminalversion2.data.local.entity.TerminalEntity;
+import com.arafath.payterminalversion2.data.local.entity.UserEntity;
 import com.arafath.payterminalversion2.util.Time;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -43,8 +45,19 @@ public class TerminalManagementFragment extends Fragment {
         ((TextView) view.findViewById(R.id.versionValue)).setText(BuildConfig.VERSION_NAME);
         ((TextView) view.findViewById(R.id.deviceValue)).setText("Android " + Build.VERSION.RELEASE);
 
+        viewModel.user.observe(getViewLifecycleOwner(), this::renderUser);
         viewModel.terminal.observe(getViewLifecycleOwner(), this::renderTerminal);
         viewModel.merchant.observe(getViewLifecycleOwner(), this::renderMerchant);
+    }
+
+    private void renderUser(UserEntity user) {
+        if (user == null) {
+            return;
+        }
+        if (!user.isOwner()) {
+            Toast.makeText(requireContext(), R.string.terminal_owner_only, Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(requireView()).navigate(R.id.action_terminal_to_home);
+        }
     }
 
     private void renderTerminal(TerminalEntity terminal) {

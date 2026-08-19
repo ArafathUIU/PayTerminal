@@ -45,6 +45,7 @@
     <string name="home_new_payment">New Payment</string>
     <string name="home_transactions">Transactions</string>
     <string name="home_terminal">Terminal</string>
+    <string name="terminal_owner_only">Only the business owner can manage the terminal.</string>
     <string name="home_recent">Recent transactions</string>
     <string name="home_empty_recent">No transactions yet. Start a new payment to see them here.</string>
 

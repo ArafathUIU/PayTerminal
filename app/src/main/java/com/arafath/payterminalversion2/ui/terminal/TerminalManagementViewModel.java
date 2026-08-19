@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class TerminalManagementViewModel extends ViewModel {
+    public final LiveData<UserEntity> user;
     public final LiveData<TerminalEntity> terminal;
     public final LiveData<MerchantEntity> merchant;
 
@@ -23,9 +24,9 @@ public class TerminalManagementViewModel extends ViewModel {
     public TerminalManagementViewModel(
             AuthRepository authRepository,
             TerminalRepository terminalRepository) {
-        LiveData<UserEntity> user = authRepository.observeUser();
+        this.user = authRepository.observeUser();
         this.terminal = terminalRepository.observeTerminal();
-        this.merchant = Transformations.switchMap(user,
+        this.merchant = Transformations.switchMap(this.user,
                 u -> u == null ? null : authRepository.observeMerchant(u.merchantId));
     }
 }

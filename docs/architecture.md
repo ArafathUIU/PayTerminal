@@ -62,6 +62,10 @@
 - **Payments and refunds are simulated on-device** by
   `PaymentRepository` (Room only — no network). See
   [current-state.md](current-state.md) for the full Q&A.
+- **Role-based access:** the signed-in `UserEntity.role` (`Owner`/`Cashier`)
+  gates owner-only features. CASHIER users don't see the Home "Terminal" tab
+  or the details "Refund" button; `RefundViewModel` and
+  `TerminalManagementFragment` re-check the role as a safety net.
 
 Data flow for a payment (current):
 
