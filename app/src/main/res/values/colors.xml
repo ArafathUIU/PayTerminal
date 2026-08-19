@@ -2,4 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="orange">#FFFF6B00</color>
+    <color name="orange_light">#FFFFB300</color>
+    <color name="orange_soft">#FFFFE5D6</color>
+    <color name="orange_muted">#FFF9B18A</color>
+
+    <color name="charcoal">#FF1A1A1A</color>
+    <color name="gray_text">#FF6E6E6E</color>
+    <color name="gray_border">#FFE0E0E0</color>
+    <color name="bg_white">#FFFFFFFF</color>
+
+    <color name="success">#FF2E7D32</color>
+    <color name="error">#FFC62828</color>
+    <color name="warning">#FFFF8F00</color>
 </resources>

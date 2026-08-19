@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_grid"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:text="@string/pair_title"
+            android:textColor="@color/orange"
             android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
@@ -26,6 +29,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
             android:text="@string/pair_subtitle"
+            android:textColor="@color/gray_text"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -33,13 +37,17 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/pairing_code_hint">
+            android:hint="@string/pairing_code_hint"
+            app:boxStrokeColor="@color/orange"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/orange">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pairingCodeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapCharacters"
+                android:textColor="@color/charcoal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,13 +57,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="@string/terminal_name_hint">
+            android:hint="@string/terminal_name_hint"
+            app:boxStrokeColor="@color/orange"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/orange">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/terminalNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
+                android:textColor="@color/charcoal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="?attr/colorError"
+            android:textColor="@color/error"
             android:visibility="gone"
             tools:text="Invalid pairing code" />
 
@@ -74,7 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/pair_button"
-            android:textAppearance="?attr/textAppearanceTitleMedium" />
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            app:backgroundTint="@color/orange" />
 
         <ProgressBar
             android:id="@+id/progress"

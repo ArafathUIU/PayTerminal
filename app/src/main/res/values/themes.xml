@@ -1,8 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PayTerminalVersion2" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.PayTerminalVersion2" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/orange_soft</item>
+        <item name="colorOnPrimaryContainer">@color/charcoal</item>
+        <item name="colorSecondary">@color/orange_light</item>
+        <item name="colorOnSecondary">@color/charcoal</item>
+        <item name="colorSurface">@color/bg_white</item>
+        <item name="colorOnSurface">@color/charcoal</item>
+        <item name="colorOnBackground">@color/charcoal</item>
+        <item name="android:colorBackground">@color/bg_white</item>
+        <item name="android:windowBackground">@color/bg_white</item>
+        <item name="colorError">@color/error</item>
     </style>
 
     <style name="Theme.PayTerminalVersion2" parent="Base.Theme.PayTerminalVersion2" />
