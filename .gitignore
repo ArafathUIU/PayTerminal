@@ -21,3 +21,5 @@ backend/**/obj/
 *.user
 .env
 backend/**/appsettings.*.local.json
+
+screen-recording.webm
