@@ -2,57 +2,6 @@
 
 Android POS payment terminal simulator.
 
-## 🎥 Demo
-
-> 📹 **Full application walkthrough:**  
-> I have recorded a manual video demonstration.  
-> The video is available at: `screen-recording.webm`  
-> The demo script is at: `docs/demo-script.md`
-
-Suggested recording flow (for reference):
-
-1. Login (Owner/Cashier)
-2. Dashboard — merchant profile, terminal status
-3. Payment flow — Card / QR / E‑Wallet amount entry
-4. Processing state → Success / Failed
-5. Transaction history list
-6. Receipt screen
-7. CASHIER‑only restrictions (Terminal tab hidden, Refund button hidden)
-8. Switch to OWNER role
-9. OWNER‑only refund
-10. Terminal Management — Online/Offline + Last sync
-
-## 📹 Video Demonstration
-
-The complete PayTerminal v1.1 workflow has been recorded and is available as:
-
-### Screen Recording
-
-![Screen Recording Demo](screen-recording.webm)
-
-**What it shows:** Full end-to-end demonstration of PayTerminal v1.1 including:
-
-- Owner login and dashboard
-- Merchant profile retrieval
-- Payment processing (local simulation)
-- Transaction history and details
-- Receipt generation
-- CASHIER role restrictions (hidden Terminal tab, hidden Refund button)
-- Owner role switch and refund functionality
-- Terminal Management with online/offline status and heartbeat
-- Card expiry MM/YY auto-format
-
-**File location:** `screen-recording.webm` (218MB, ~2 min recording)
-
-**Demonstrated flows:**
-
-- **Owner:** Payment, Refund, Terminal Management
-- **CASHIER:** Payment + History only; no OWNER-only operations
-- **Payment:** Local simulation — no real bank/MFS/payment gateway integration
-- **Refund:** Local simulation — transaction status moves `SUCCESS → REFUNDED`
-- **Terminal Health:** Online/Offline determined by heartbeat freshness (< 2 min)
-- **Card Expiry:** Automatic MM/YY formatting
-
 ## 📸 Screenshots
 
 ### Login & Dashboard
