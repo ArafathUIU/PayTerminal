@@ -53,6 +53,26 @@ The complete PayTerminal v1.1 workflow has been recorded and is available as:
 - **Terminal Health:** Online/Offline determined by heartbeat freshness (< 2 min)
 - **Card Expiry:** Automatic MM/YY formatting
 
+## 📸 Screenshots
+
+### Login & Dashboard
+
+| Login | POS Home |
+| --- | --- |
+| ![Login](images/Login.png) | ![POS Home](images/POS_Home.png) |
+
+### Payment
+
+| Payment Method | Payment Amount Input | Payment by Card | Payment by E-wallet | QR Payment | E-Wallet |
+| --- | --- | --- | --- | --- | --- |
+| ![Payment Method](images/Payment%20Method.png) | ![Payment Amount](images/Payment%20Amount%20Input%20Screen.png) | ![Card](images/Payment%20by%20Card.png) | ![E-wallet](images/Payment%20by%20E-wallet.png) | ![QR](images/QR%20Payment.png) | ![E-Wallet](images/E-Wallet.png) |
+
+### Result, Receipt & Settings
+
+| Card Successful | Receipt | Settings |
+| --- | --- | --- |
+| ![Card Successful](images/Card%20Successful.png) | ![Receipt](images/Reciept.png) | ![Settings](images/Settings.png) |
+
 ## 💳 Payment Flow
 
 ```text
